@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content OS - The Last Content Hire You'll Ever Make</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#111111',
+                            paper: '#f4f4f0',
+                            accent: '#CCFF00', // Quirky Lime
+                            purple: '#9D4EDD',
+                            blue: '#4361EE'
+                        }
+                    },
+                    boxShadow: {
+                        'neobrutal': '5px 5px 0px 0px rgba(0,0,0,1)',
+                        'neobrutal-sm': '3px 3px 0px 0px rgba(0,0,0,1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f4f4f0;
+            color: #111111;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4f4f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #111;
+            border: 2px solid #f4f4f0;
+            border-radius: 5px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.active {
+            opacity: 1;
+        }
+
+        /* Modal Styles */
+        .modal {
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            transform: scale(0.95);
+            transition: transform 0.3s ease-in-out;
+        }
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Announcement Bar (Hidden initially, slides in) -->
+    <div id="guarantee-bar" class="fixed w-full z-[60] top-0 left-0 bg-brand-black text-white text-center py-1.5 font-bold text-[10px] md:text-xs border-b border-gray-800 flex justify-center items-center gap-2 shadow-neobrutal-sm transition-transform duration-300 -translate-y-full h-[32px]">
+        <i class="ph-fill ph-seal-check text-brand-accent text-sm md:text-base"></i>
+        <span>30-DAY RANKING GUARANTEE: We rank you on Page 1 or work for free.</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="main-nav" class="fixed w-full z-50 top-0 left-0 border-b-2 border-black bg-brand-paper px-4 py-2 md:px-8 flex justify-between items-center transition-all duration-300 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-black text-brand-accent flex items-center justify-center rounded-sm shadow-neobrutal-sm">
+                <i class="ph-bold ph-robot text-2xl"></i>
+            </div>
+            <div class="flex flex-col justify-center">
+                <span class="font-display font-bold text-xl tracking-tighter leading-none">CONTENT OS</span>
+            </div>
+        </div>
+        <a href="#book" class="hidden md:block font-bold text-sm bg-black text-white px-4 py-2 border-2 border-transparent hover:bg-transparent hover:text-black hover:border-black hover:shadow-neobrutal-sm transition-all duration-200">
+            Book Intro Call
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 px-4 md:px-8 max-w-7xl mx-auto flex flex-col items-center text-center relative">
+        <div class="inline-block bg-brand-accent border-2 border-black px-3 py-1 font-bold text-xs uppercase tracking-widest mb-6 shadow-neobrutal-sm transform -rotate-2">
+            AI Content Engine for Pro Services
+        </div>
+        
+        <h1 class="font-display font-bold text-5xl md:text-7xl leading-[1.05] mb-6 max-w-5xl relative tracking-tight">
+            THE LAST CONTENT HIRE YOU’LL 
+            <span class="relative inline-block">
+                EVER
+                <!-- Hand-drawn Underline SVG -->
+                <svg class="absolute w-[110%] h-4 -bottom-1 -left-1 text-brand-purple" viewBox="0 0 100 10" preserveAspectRatio="none">
+                    <path d="M2,5 Q20,1 40,5 T80,5 T98,4" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" />
+                </svg>
+            </span> 
+            NEED TO MAKE
+        </h1>
+        
+        <p class="font-sans text-lg md:text-xl text-gray-700 max-w-2xl mb-10 leading-relaxed font-medium">
+            Get 
+            <span class="relative inline-block px-1 mx-1">
+                <span class="absolute inset-0 bg-brand-accent/70 -rotate-1 transform -z-10 rounded-sm"></span>
+                20+ publish-ready SEO blogs/month
+            </span> 
+            without ever touching a keyboard using a team of 
+            <span class="relative inline-block px-1 mx-1">
+                <span class="absolute inset-0 bg-brand-purple/20 rotate-2 transform -z-10 rounded-sm"></span>
+                AI agents
+            </span>
+            custom-built for your firm.
+        </p>
+
+        <div class="flex flex-col md:flex-row gap-4 mb-16">
+            <a href="#book" class="font-display font-bold text-lg bg-brand-blue text-white px-8 py-4 border-2 border-black shadow-neobrutal hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center justify-center gap-2">
+                <i class="ph-bold ph-phone"></i> Book an Intro Call
+            </a>
+            <button onclick="toggleModal('examples-modal')" class="font-display font-bold text-lg bg-white text-black px-8 py-4 border-2 border-black shadow-neobrutal hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center justify-center gap-2">
+                <i class="ph-bold ph-article"></i> See Example Outputs
+            </button>
+        </div>
+
+        <!-- VSL Placeholder -->
+        <div class="w-full max-w-4xl aspect-video bg-black rounded-lg border-2 border-black shadow-neobrutal relative overflow-hidden group cursor-pointer flex items-center justify-center">
+            <!-- Decorative tech background -->
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#CCFF00_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            
+            <div class="text-center relative z-10 group-hover:scale-105 transition-transform duration-300">
+                <div class="w-20 h-20 bg-brand-accent rounded-full flex items-center justify-center border-2 border-black mx-auto mb-4">
+                    <i class="ph-fill ph-play text-4xl text-black ml-1"></i>
+                </div>
+                <h3 class="font-display font-bold text-white text-xl">Watch How Content OS Works</h3>
+                <p class="text-gray-400 text-sm mt-2">1 Setup. Infinite Output.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof (Logos) -->
+    <section class="py-10 border-y-2 border-black bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <p class="text-center font-bold text-sm text-gray-500 uppercase tracking-widest mb-8">Powering content for industry leaders</p>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                <!-- Mock Logos -->
+                <div class="font-display font-bold text-2xl flex items-center gap-2"><i class="ph-fill ph-polygon text-brand-blue"></i> FINCORP</div>
+                <div class="font-display font-bold text-2xl flex items-center gap-2"><i class="ph-fill ph-triangle text-brand-purple"></i> LEGALFLOW</div>
+                <div class="font-display font-bold text-2xl flex items-center gap-2"><i class="ph-fill ph-circle text-brand-accent"></i> MARKETAI</div>
+                <div class="font-display font-bold text-2xl flex items-center gap-2"><i class="ph-fill ph-square text-brand-blue"></i> VENTURE</div>
+                <div class="font-display font-bold text-2xl flex items-center gap-2"><i class="ph-fill ph-hexagon text-brand-purple"></i> SCALEUP</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Grid -->
+    <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto">
+        <h2 class="font-display font-bold text-4xl text-center mb-16">Why Professional Service Firms Switch</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Benefit 1 -->
+            <div class="bg-white p-8 border-2 border-black shadow-neobrutal rounded-lg hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-12 h-12 bg-brand-accent border-2 border-black flex items-center justify-center text-2xl mb-6">
+                    <i class="ph-bold ph-robot"></i>
+                </div>
+                <h3 class="font-display font-bold text-2xl mb-4">Hands-Free Publishing</h3>
+                <p class="text-gray-600">Publish 8-20 SEO-ready blogs/month without ever touching a keyboard. Your agent does the research, writing, and editing.</p>
+            </div>
+
+            <!-- Benefit 2 -->
+            <div class="bg-brand-purple text-white p-8 border-2 border-black shadow-neobrutal rounded-lg hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-12 h-12 bg-white text-black border-2 border-black flex items-center justify-center text-2xl mb-6">
+                    <i class="ph-bold ph-chart-line-up"></i>
+                </div>
+                <h3 class="font-display font-bold text-2xl mb-4">Rankings, Not Just Words</h3>
+                <p class="text-gray-100">Don’t pay for blogs, pay for results. We optimize specifically to rank on Google Page 1 and inside LLM answer snapshots.</p>
+            </div>
+
+            <!-- Benefit 3 -->
+            <div class="bg-white p-8 border-2 border-black shadow-neobrutal rounded-lg hover:-translate-y-2 transition-transform duration-300">
+                <div class="w-12 h-12 bg-brand-blue text-white border-2 border-black flex items-center justify-center text-2xl mb-6">
+                    <i class="ph-bold ph-lightning"></i>
+                </div>
+                <h3 class="font-display font-bold text-2xl mb-4">Infinite Scalability</h3>
+                <p class="text-gray-600">One setup, one payment. Experiment faster, iterate on topics instantly, and dominate your niche authority.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof (Metrics) -->
+    <section class="bg-black text-white py-16 px-4 border-y-2 border-black">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-gray-800">
+            <div class="p-4">
+                <div class="font-display font-bold text-5xl text-brand-accent mb-2">20+</div>
+                <div class="text-gray-400">Blogs Per Month</div>
+            </div>
+            <div class="p-4">
+                <div class="font-display font-bold text-5xl text-brand-blue mb-2">Page 1</div>
+                <div class="text-gray-400">Ranking Focus</div>
+            </div>
+            <div class="p-4">
+                <div class="font-display font-bold text-5xl text-brand-purple mb-2">100%</div>
+                <div class="text-gray-400">Tone Consistency</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Process -->
+    <section class="py-20 px-4 md:px-8 max-w-5xl mx-auto">
+        <h2 class="font-display font-bold text-4xl text-center mb-16">How We Build Your Content OS</h2>
+        
+        <div class="relative">
+            <!-- Vertical Line -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-black hidden md:block"></div>
+
+            <!-- Step 1 -->
+            <div class="flex flex-col md:flex-row items-center mb-16 relative">
+                <div class="w-full md:w-1/2 md:pr-12 text-center md:text-right mb-6 md:mb-0">
+                    <h3 class="font-display font-bold text-2xl mb-2">1. Knowledge Download</h3>
+                    <p class="text-gray-600">We ingest your firm’s internal documents, past successful content, and unique voice guidelines.</p>
+                </div>
+                <div class="z-10 w-12 h-12 bg-brand-paper border-2 border-black flex items-center justify-center font-bold text-xl shadow-neobrutal-sm">1</div>
+                <div class="w-full md:w-1/2 md:pl-12 hidden md:block"></div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex flex-col md:flex-row items-center mb-16 relative">
+                <div class="w-full md:w-1/2 md:pr-12 hidden md:block"></div>
+                <div class="z-10 w-12 h-12 bg-brand-accent border-2 border-black flex items-center justify-center font-bold text-xl shadow-neobrutal-sm">2</div>
+                <div class="w-full md:w-1/2 md:pl-12 text-center md:text-left mt-6 md:mt-0">
+                    <h3 class="font-display font-bold text-2xl mb-2">2. Agent Training</h3>
+                    <p class="text-gray-600">I program custom AI agents specifically for your niche to replicate expert-level clarity and tone.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flex flex-col md:flex-row items-center relative">
+                <div class="w-full md:w-1/2 md:pr-12 text-center md:text-right mb-6 md:mb-0">
+                    <h3 class="font-display font-bold text-2xl mb-2">3. Auto-Pilot Mode</h3>
+                    <p class="text-gray-600">Your system runs, generating SEO-optimized content. You review (optional) and publish. Infinite output.</p>
+                </div>
+                <div class="z-10 w-12 h-12 bg-brand-purple text-white border-2 border-black flex items-center justify-center font-bold text-xl shadow-neobrutal-sm">3</div>
+                <div class="w-full md:w-1/2 md:pl-12 hidden md:block"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantee Section -->
+    <section class="bg-brand-accent border-y-2 border-black py-20 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <div class="inline-block bg-black text-white px-4 py-1 font-bold rounded-full mb-6">RISK FREE</div>
+            <h2 class="font-display font-bold text-4xl md:text-5xl mb-6">30-DAY RANKING GUARANTEE</h2>
+            <p class="font-sans text-xl md:text-2xl leading-relaxed mb-8">
+                If you don’t see blog posts beginning to rank on Page 1 or showing up in LLM answer snapshots, I’ll re-train and optimize your agent for <strong>FREE</strong> until they do.
+            </p>
+            <div class="w-24 h-1 bg-black mx-auto"></div>
+        </div>
+    </section>
+    
+    <!-- Pricing / Packages Section -->
+    <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto" id="pricing">
+        <h2 class="font-display font-bold text-4xl text-center mb-6">CHOOSE YOUR PATH TO AUTOMATION</h2>
+        <p class="text-center text-gray-700 max-w-2xl mx-auto mb-16">Select the level of involvement that best fits your firm's needs and resources.</p>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <!-- Option 1: Done-For-You -->
+            <div class="bg-white border-2 border-black shadow-neobrutal rounded-lg flex flex-col h-full relative overflow-hidden">
+                <div class="bg-brand-paper p-8 border-b-2 border-black">
+                    <h3 class="font-display font-bold text-2xl mb-2">DONE-FOR-YOU — “The Complete Content OS”</h3>
+                    <p class="text-gray-600 mb-6">Perfect if you want the output without the work.</p>
+                    <div class="font-display font-bold text-3xl">$999 <span class="text-base font-sans font-normal text-gray-600">One-Time Investment</span></div>
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="mb-8">
+                            <h4 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="ph-bold ph-gift text-brand-blue"></i> YOU GET:</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>I build & optimize everything</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>Custom Writer & Editor Agents</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>SEO cluster map & content blueprint</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>3–6 sample blogs</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>Video training & handover</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>4 months of support + tuning</span></li>
+                            </ul>
+                        </div>
+                        <div class="mb-8">
+                            <h4 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="ph-bold ph-hand-pointing text-brand-blue"></i> YOU DO:</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-arrow-right text-gray-400 mt-1"></i> <span>Send me your docs</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-arrow-right text-gray-400 mt-1"></i> <span>Approve the final system</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-arrow-right text-gray-400 mt-1"></i> <span>Enjoy never writing another blog again</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="#book" class="w-full font-display font-bold text-lg bg-brand-blue text-white px-8 py-4 border-2 border-black shadow-neobrutal hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center justify-center gap-2">
+                        Book DFY Call
+                    </a>
+                </div>
+            </div>
+
+            <!-- Option 2: Done-With-You -->
+            <div class="bg-white border-2 border-black shadow-neobrutal rounded-lg flex flex-col h-full relative overflow-hidden">
+                 <div class="bg-brand-paper p-8 border-b-2 border-black">
+                    <h3 class="font-display font-bold text-2xl mb-2">DONE-WITH-YOU — “The Co-Built Content OS”</h3>
+                    <p class="text-gray-600 mb-6">Ideal for insight, strategy, and aggressive scaling.</p>
+                    <div class="font-display font-bold text-3xl">Custom Pricing <span class="text-base font-sans font-normal text-gray-600">Based on Scope</span></div>
+                </div>
+                <div class="p-8 flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="mb-8">
+                            <h4 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="ph-bold ph-gift text-brand-purple"></i> YOU GET:</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-2 font-bold text-brand-purple"><i class="ph-bold ph-plus-circle mt-1"></i> <span>Everything in DFY, plus:</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>1-hour strategy workshop</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>1–2 tuning sessions with you involved</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>Collaborative drafting of first blogs</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>Help customizing prompts & workflows</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-check text-green-600 mt-1"></i> <span>More internal team training</span></li>
+                            </ul>
+                        </div>
+                        <div class="mb-8">
+                            <h4 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="ph-bold ph-hand-pointing text-brand-purple"></i> YOU DO:</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-arrow-right text-gray-400 mt-1"></i> <span>Collaborate on tone & strategy</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-arrow-right text-gray-400 mt-1"></i> <span>Attend a couple of sessions</span></li>
+                                <li class="flex items-start gap-2"><i class="ph-bold ph-arrow-right text-gray-400 mt-1"></i> <span>Co-own the build process</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="#book" class="w-full font-display font-bold text-lg bg-brand-purple text-white px-8 py-4 border-2 border-black shadow-neobrutal hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center justify-center gap-2">
+                        Book Strategy Call
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div class="order-2 md:order-1">
+            <h2 class="font-display font-bold text-4xl mb-6">Why Trust Me?</h2>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                Content OS isn't just another ChatGPT wrapper. It's built by someone who’s done programming at research institutions, worked inside fast-moving startups, and spent 5+ years doing SEO for finance, legal, and marketing firms.
+            </p>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                I understand the intersection of technical code and human persuasion. I build systems that don't just write words—they write revenue.
+            </p>
+            <ul class="space-y-4 font-bold">
+                <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-purple"></i> 5+ Years High-Stakes SEO</li>
+                <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-purple"></i> Research Institution Background</li>
+                <li class="flex items-center gap-2"><i class="ph-bold ph-check text-brand-purple"></i> Custom Coded Agents, No Generic Templates</li>
+            </ul>
+        </div>
+        <div class="order-1 md:order-2 flex justify-center">
+            <!-- Abstract "Coder" Visual -->
+            <div class="w-80 h-80 bg-brand-black rounded-lg border-2 border-black shadow-neobrutal p-6 relative overflow-hidden">
+                <div class="font-mono text-brand-accent text-sm opacity-80 leading-tight">
+                    > init_agent_protocol()<br>
+                    > loading_knowledge_base...<br>
+                    > optimizing_for_seo...<br>
+                    > status: RANKING_PAGE_1<br>
+                    > ...<br>
+                    > ...<br>
+                    <span class="animate-pulse">_</span>
+                </div>
+                <div class="absolute bottom-6 right-6 w-24 h-24 bg-brand-purple rounded-full mix-blend-screen opacity-50 animate-float"></div>
+                <div class="absolute top-10 right-10 w-12 h-12 bg-brand-blue rounded-full mix-blend-screen opacity-50 animate-float" style="animation-delay: 1s;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison / Pain Points -->
+    <section class="bg-white border-y-2 border-black py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-display font-bold text-3xl text-center mb-12">The Old Way vs. Content OS</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- The Old Way -->
+                <div class="bg-gray-100 p-8 rounded-lg border-2 border-dashed border-gray-400 opacity-80">
+                    <h3 class="font-bold text-xl mb-6 text-gray-500 flex items-center gap-2"><i class="ph-bold ph-x-circle"></i> TRADITIONAL FREELANCERS</h3>
+                    <ul class="space-y-4 text-gray-600">
+                        <li class="flex items-start gap-3"><span class="text-red-500 font-bold">x</span> Takes too long to experiment or see results</li>
+                        <li class="flex items-start gap-3"><span class="text-red-500 font-bold">x</span> Freelancers are a month-to-month expense with no clear ROI</li>
+                        <li class="flex items-start gap-3"><span class="text-red-500 font-bold">x</span> Inconsistent tone and missed deadlines</li>
+                        <li class="flex items-start gap-3"><span class="text-red-500 font-bold">x</span> Expensive per-word pricing models</li>
+                    </ul>
+                </div>
+
+                <!-- Content OS -->
+                <div class="bg-brand-paper p-8 rounded-lg border-2 border-black shadow-neobrutal">
+                    <h3 class="font-bold text-xl mb-6 text-brand-black flex items-center gap-2"><i class="ph-bold ph-check-circle text-brand-accent"></i> CONTENT OS AGENTS</h3>
+                    <ul class="space-y-4 text-gray-800">
+                        <li class="flex items-start gap-3"><span class="text-green-600 font-bold">✓</span> Instant iteration. Pivot strategies in minutes.</li>
+                        <li class="flex items-start gap-3"><span class="text-green-600 font-bold">✓</span> One-time payment setup. Own the asset forever.</li>
+                        <li class="flex items-start gap-3"><span class="text-green-600 font-bold">✓</span> Perfect consistency and expert-level clarity every time.</li>
+                        <li class="flex items-start gap-3"><span class="text-green-600 font-bold">✓</span> Pay for results (rankings), not outputs.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 px-4 md:px-8 max-w-3xl mx-auto">
+        <h2 class="font-display font-bold text-4xl text-center mb-12">Frequently Asked Questions</h2>
+        
+        <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div class="border-2 border-black shadow-neobrutal-sm bg-white">
+                <button class="w-full text-left p-6 font-bold text-lg flex justify-between items-center focus:outline-none" onclick="toggleAccordion('faq1')">
+                    <span>How is this different from just using ChatGPT?</span>
+                    <i class="ph-bold ph-caret-down transform transition-transform" id="icon-faq1"></i>
+                </button>
+                <div id="faq1" class="accordion-content px-6 bg-gray-50 border-t-2 border-black">
+                    <div class="py-6 text-gray-700">
+                        ChatGPT is a generalist. I build specialized agents trained on YOUR specific internal documents, brand voice, and industry data. We also build in SEO constraints that standard LLMs ignore, ensuring your content actually ranks.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="border-2 border-black shadow-neobrutal-sm bg-white">
+                <button class="w-full text-left p-6 font-bold text-lg flex justify-between items-center focus:outline-none" onclick="toggleAccordion('faq2')">
+                    <span>What happens after the setup?</span>
+                    <i class="ph-bold ph-caret-down transform transition-transform" id="icon-faq2"></i>
+                </button>
+                <div id="faq2" class="accordion-content px-6 bg-gray-50 border-t-2 border-black">
+                    <div class="py-6 text-gray-700">
+                        You own the system. You can generate unlimited blogs. I provide a handover session to show you exactly how to run it (it takes about 5 minutes a week), or we can discuss a small retainer for me to manage the generation for you.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="border-2 border-black shadow-neobrutal-sm bg-white">
+                <button class="w-full text-left p-6 font-bold text-lg flex justify-between items-center focus:outline-none" onclick="toggleAccordion('faq3')">
+                    <span>Do you guarantee results?</span>
+                    <i class="ph-bold ph-caret-down transform transition-transform" id="icon-faq3"></i>
+                </button>
+                <div id="faq3" class="accordion-content px-6 bg-gray-50 border-t-2 border-black">
+                    <div class="py-6 text-gray-700">
+                        Yes. The 30-Day Ranking Guarantee means if you don't see movement in SERPs or LLM snapshots within a month of publishing, I work for free until you do.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section id="book" class="bg-black text-white py-24 px-4 text-center border-t-2 border-white">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="font-display font-bold text-4xl md:text-6xl mb-8">Ready to Automate Your Authority?</h2>
+            <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">Stop writing. Start ranking. One setup, infinite expert-level content.</p>
+            
+            <div class="max-w-3xl mx-auto bg-white rounded-lg overflow-hidden border-2 border-gray-800 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+                <!-- Google Calendar Appointment Scheduling begin --> 
+                <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3eOr0OW0668MEc7HqqJWBXYu5TTYVSU4e5BqATJR7kiSIy1-UoAuTdjA4HF3o2PTc1qyZ4NP1A?gv=true" style="border: 0" width="100%" height="600" frameborder="0"></iframe> 
+                <!-- end Google Calendar Appointment Scheduling -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-paper py-8 px-4 border-t-2 border-black text-center text-sm font-bold">
+        <div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto">
+            <div class="flex items-center gap-2 mb-4 md:mb-0">
+                <i class="ph-fill ph-robot text-lg"></i> CONTENT OS &copy; 2024
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="hover:underline">Privacy</a>
+                <a href="#" class="hover:underline">Terms</a>
+                <a href="#" class="hover:underline">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Example Outputs Modal -->
+    <div id="examples-modal" class="modal fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="toggleModal('examples-modal')"></div>
+        
+        <!-- Content -->
+        <div class="modal-content relative bg-white w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-lg border-4 border-black shadow-[10px_10px_0px_0px_#CCFF00]">
+            <div class="sticky top-0 bg-brand-black text-white p-4 md:p-6 flex justify-between items-center border-b-4 border-black z-10">
+                <h3 class="font-display font-bold text-2xl md:text-3xl flex items-center gap-2">
+                    <i class="ph-bold ph-robot text-brand-accent"></i>
+                    AGENT CAPABILITIES
+                </h3>
+                <button onclick="toggleModal('examples-modal')" class="text-white hover:text-brand-accent transition-colors">
+                    <i class="ph-bold ph-x text-3xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 md:p-10 bg-brand-paper">
+                <div class="grid md:grid-cols-2 gap-8">
+                    
+                    <!-- Tile 1: Headlines -->
+                    <div class="bg-white p-6 border-2 border-black shadow-neobrutal rounded hover:-translate-y-1 transition-transform">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-brand-blue text-white border-2 border-black flex items-center justify-center text-xl">
+                                <i class="ph-bold ph-text-h-one"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl">Smart Headlines</h4>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 font-mono uppercase tracking-wider">Example Output:</p>
+                        <div class="bg-gray-50 p-4 border border-gray-200 rounded mb-4">
+                            <div class="font-bold text-lg mb-1">"The 2024 R&D Tax Credit Guide for Architecture Firms"</div>
+                            <div class="text-xs text-green-600 font-bold">✓ High CTR Niche Trigger</div>
+                            <div class="text-xs text-green-600 font-bold">✓ Exact Keyword Match</div>
+                        </div>
+                        <p class="text-gray-600 text-sm">Agents analyze SERP gaps to craft headlines that speak directly to specific client verticals (e.g., Architects, Doctors, Agencies) rather than generic audiences.</p>
+                    </div>
+
+                    <!-- Tile 2: Meta Descriptions -->
+                    <div class="bg-white p-6 border-2 border-black shadow-neobrutal rounded hover:-translate-y-1 transition-transform">
+                         <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-brand-purple text-white border-2 border-black flex items-center justify-center text-xl">
+                                <i class="ph-bold ph-code"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl">Intent-Matched Metas</h4>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 font-mono uppercase tracking-wider">Example Output:</p>
+                        <div class="bg-gray-50 p-4 border border-gray-200 rounded mb-4">
+                            <div class="text-gray-800 text-sm mb-1 leading-snug">"Fractional CFO vs. Full-Time Hire: What's right for your agency? We compare costs, scope, and ROI to help you scale without the overhead."</div>
+                            <div class="text-xs text-blue-600 font-bold mt-2">✓ Commercial Intent Optimized</div>
+                        </div>
+                        <p class="text-gray-600 text-sm">Descriptions designed to capture decision-makers comparing solutions, driving high-quality traffic to your service pages.</p>
+                    </div>
+
+                    <!-- Tile 3: In-Article CTAs -->
+                    <div class="bg-white p-6 border-2 border-black shadow-neobrutal rounded hover:-translate-y-1 transition-transform">
+                         <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-brand-accent text-black border-2 border-black flex items-center justify-center text-xl">
+                                <i class="ph-bold ph-cursor-click"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl">Contextual CTAs</h4>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 font-mono uppercase tracking-wider">Example Output:</p>
+                        <div class="bg-gray-50 p-4 border border-gray-200 rounded mb-4">
+                            <div class="text-gray-800 text-sm italic mb-2">"...navigating this compliance shift alone often leads to penalties."</div>
+                            <div class="bg-blue-50 border-l-4 border-brand-blue p-3 text-sm font-bold text-brand-blue">
+                                🛡️ Unsure about your exposure? <span class="underline">Book a confidential 15-min Risk Assessment.</span>
+                            </div>
+                            <div class="text-xs text-blue-600 font-bold mt-2">✓ Decision-Stage CTA</div>
+                        </div>
+                        <p class="text-gray-600 text-sm">We weave your high-ticket offers (audits, consultations, workshops) naturally into the problem-agitation phase of the blog.</p>
+                    </div>
+
+                    <!-- Tile 4: Semantic Structuring -->
+                    <div class="bg-white p-6 border-2 border-black shadow-neobrutal rounded hover:-translate-y-1 transition-transform">
+                         <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 bg-black text-white border-2 border-gray-600 flex items-center justify-center text-xl">
+                                <i class="ph-bold ph-tree-structure"></i>
+                            </div>
+                            <h4 class="font-display font-bold text-xl">Cluster Linking (DWY ONLY)</h4>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4 font-mono uppercase tracking-wider">Example Output:</p>
+                        <div class="bg-gray-50 p-4 border border-gray-200 rounded mb-4">
+                            <div class="text-gray-800 text-sm">
+                                "This aligns with the 'Delegate & Elevate' step in our <span class="text-brand-blue underline font-bold">Executive Leadership Framework</span>, ensuring you focus on strategy."
+                            </div>
+                            <div class="text-xs text-purple-600 font-bold mt-2">✓ Auto-Internal Linking</div>
+                        </div>
+                        <p class="text-gray-600 text-sm">Agents automatically identify and link to your core service pages and proprietary frameworks, establishing you as the niche authority.</p>
+                    </div>
+
+                </div>
+                
+                <div class="mt-8 flex justify-center">
+                    <button onclick="toggleModal('examples-modal'); document.getElementById('book').scrollIntoView();" class="font-display font-bold text-lg bg-brand-black text-white px-8 py-3 border-2 border-transparent hover:bg-brand-accent hover:text-black hover:border-black hover:shadow-neobrutal transition-all">
+                        Get These Results For Your Firm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS for Accordion, Scroll-to-Reveal Header, and Modal -->
+    <script>
+        // Scroll Logic for Guarantee Bar
+        const guaranteeBar = document.getElementById('guarantee-bar');
+        const mainNav = document.getElementById('main-nav');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) { // Threshold to trigger
+                guaranteeBar.classList.remove('-translate-y-full');
+                // Move nav down by roughly the height of the bar (32px)
+                mainNav.classList.add('translate-y-[32px]');
+            } else {
+                guaranteeBar.classList.add('-translate-y-full');
+                mainNav.classList.remove('translate-y-[32px]');
+            }
+        });
+
+        // Accordion Logic
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(`icon-${id}`);
+            
+            // Toggle active class
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.classList.remove('active');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                content.classList.add('active');
+                icon.style.transform = 'rotate(180deg)';
+            }
+
+            // Close other accordions
+            const allContent = document.querySelectorAll('.accordion-content');
+            const allIcons = document.querySelectorAll('.ph-caret-down');
+            
+            allContent.forEach(item => {
+                if (item.id !== id && item.style.maxHeight) {
+                    item.style.maxHeight = null;
+                    item.classList.remove('active');
+                }
+            });
+            
+            allIcons.forEach(i => {
+                if (i.id !== `icon-${id}`) {
+                    i.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+
+        // Modal Logic
+        function toggleModal(modalID){
+            const modal = document.getElementById(modalID);
+            const body = document.body;
+            
+            if(modal.classList.contains('open')){
+                modal.classList.remove('open');
+                body.style.overflow = 'auto'; // Enable scrolling
+            } else {
+                modal.classList.add('open');
+                body.style.overflow = 'hidden'; // Disable scrolling
+            }
+        }
+    </script>
+</body>
+</html>
